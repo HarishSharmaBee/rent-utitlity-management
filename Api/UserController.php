@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
@@ -346,5 +347,42 @@ class UserController extends Controller
             'success' => true ,
             'message' => 'Profile image deleted successfully.',
         ]);
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/delete-account",
+     *     summary="Delete user account",
+     *     description="Soft deletes the authenticated user's account",
+     *     operationId="deleteAccount",
+     *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Account deleted successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Account deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->delete(); // Soft delete
+
+        return response()->json([
+            'message' => 'Account deleted successfully'
+        ], 200);
     }
 }
