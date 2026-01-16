@@ -14,7 +14,7 @@ class Page extends Model
         'content',
         'meta_title',
         'meta_description',
-        'is_active',
+        'is_active'
     ];
 
     protected $casts = [

@@ -12,8 +12,10 @@ class BuildingController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+        
             $data = Building::with('user')
             ->orderBy('id', 'DESC');
+            
             return DataTables::eloquent($data)
                 ->addIndexColumn()
                 ->addColumn('user_name',function($row){
