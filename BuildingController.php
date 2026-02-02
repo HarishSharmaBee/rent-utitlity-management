@@ -55,6 +55,6 @@ class BuildingController extends Controller
                  ->rawColumns(['user_name','building_name','action'])
                 ->make(true);
         }
-    return view('admin.flat.index');
+        return view('admin.flat.index');
   }
 }

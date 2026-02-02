@@ -1,0 +1,63 @@
+@extends('layouts/contentNavbarLayout')
+
+@section('content')
+<!-- Users -->
+<div class="card">   
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="card-header">Flats</h5>
+  </div>
+  <div class="card-body">
+    @if(session('success'))
+      <div class="alert alert-success">
+      {{ session('success') }}
+      </div>
+    @endif
+    <div class="table-responsive text-nowrap">
+      <table class="table table-bordered" id="flats-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Flat Number</th>
+                <th>Building Name</th>
+                <th>Rent Amount</th>
+                {{--  <th>Tenant</th>  --}}
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!--/ Bordered Table -->
+@endsection
+@section('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function() {
+      $('#flats-table').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: '{{ route("flats.index") }}',
+          columns: [
+            {
+              data: 'id',
+              name: 'id',
+              orderable: false,
+              searchable: false,
+              width: "5%"
+            },
+            { data: 'flat_number' },
+            { data: 'building_name' },
+            {data:'rent_amount'},
+            { data: 'action', 
+              orderable: false,
+              searchable: false
+            }
+          ]
+      });
+  });
+</script>
+@endsection
